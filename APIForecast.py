@@ -102,6 +102,13 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
             slb += lbound[i - j*slen]
         ub.append(sub/currseason)
         lb.append(slb/currseason)
+#    for i in range(slen):
+#       sub, slb = 0, 0
+#        for j in range(n_seasons):
+#            sub += ubound[i + j*slen]
+#            slb += lbound[i + j*slen]
+#        ub.append(sub/n_seasons)
+#        lb.append(slb/n_seasons)
 #    ubound, lbound = [], []
 #    for i in range(n_seasons):
 #        ubound.extend(ub)
