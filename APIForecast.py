@@ -106,18 +106,18 @@ def fit_neldermead(nums, season):
     noimprovbrk = 10  # Stop after 10 iterations without improvement
 
     noimprov = 0  # Non improvement counter
-    prev, dev, ubound, lbound = triple_exponential_smoothing(nums, season, alpha, beta, gamma, season)
+    prev, dev, ubound, lbound = holt_winters(nums, season, alpha, beta, gamma, season)
     prevbest = sse(nums, prev)  # Target function
     res = [[[alpha, beta, gamma], prevbest]]
 
     alpha += step
-    prev, dev, ubound, lbound = triple_exponential_smoothing(nums, season, alpha, beta, gamma, season)
+    prev, dev, ubound, lbound = holt_winters(nums, season, alpha, beta, gamma, season)
     res.append([[alpha, beta, gamma], sse(nums, prev)])
     beta += step
-    prev, dev, ubound, lbound = triple_exponential_smoothing(nums, season, alpha, beta, gamma, season)
+    prev, dev, ubound, lbound = holt_winters(nums, season, alpha, beta, gamma, season)
     res.append([[alpha, beta, gamma], sse(nums, prev)])
     gamma += step
-    prev, dev, ubound, lbound = triple_exponential_smoothing(nums, season, alpha, beta, gamma, season)
+    prev, dev, ubound, lbound = holt_winters(nums, season, alpha, beta, gamma, season)
     res.append([[alpha, beta, gamma], sse(nums, prev)])
 
     iterazioni = 0
@@ -147,7 +147,7 @@ def fit_neldermead(nums, season):
         alphar = alpha0 + a * (alpha0 - res[-1][0][0])
         betar = beta0 + a * (beta0 - res[-1][0][1])
         gammar = gamma0 + a * (gamma0 - res[-1][0][2])
-        rsse = sse(nums, triple_exponential_smoothing(nums, season, alphar, betar, gammar, season)[0])
+        rsse = sse(nums, holt_winters(nums, season, alphar, betar, gammar, season)[0])
         if res[0][1] <= rsse < res[-2][1]:
             del res[-1]
             if (alphar < 0 or alphar > 1) or (betar < 0 or betar > 1) or (gammar < 0 or gammar > 1):
@@ -161,7 +161,7 @@ def fit_neldermead(nums, season):
             alphae = alpha0 + g * (alpha0 - res[-1][0][0])
             betae = beta0 + g * (beta0 - res[-1][0][1])
             gammae = gamma0 + g * (gamma0 - res[-1][0][2])
-            esse = sse(nums, triple_exponential_smoothing(nums, season, alphae, betae, gammae, season)[0])
+            esse = sse(nums, holt_winters(nums, season, alphae, betae, gammae, season)[0])
             if esse < rsse:
                 del res[-1]
                 if (alphae < 0 or alphae > 1) or (betae < 0 or betae > 1) or (gammae < 0 or gammae > 1):
@@ -181,7 +181,7 @@ def fit_neldermead(nums, season):
         alphac = alpha0 + r * (alpha0 - res[-1][0][0])
         betac = beta0 + r * (beta0 - res[-1][0][1])
         gammac = gamma0 + r * (gamma0 - res[-1][0][2])
-        csse = sse(nums, triple_exponential_smoothing(nums, season, alphac, betac, gammac, season)[0])
+        csse = sse(nums, holt_winters(nums, season, alphac, betac, gammac, season)[0])
         if csse < res[-1][1]:
             del res[-1]
             if (alphac < 0 or alphac > 1) or (betac < 0 or betac > 1) or (gammac < 0 or gammac > 1):
@@ -199,7 +199,7 @@ def fit_neldermead(nums, season):
             ridalpha = alpha1 + s * (t[0][0] - alpha1)
             ridbeta = beta1 + s * (t[0][1] - beta1)
             ridgamma = gamma1 + s * (t[0][2] - gamma1)
-            ridsse = sse(nums, triple_exponential_smoothing(nums, season, ridalpha, ridbeta, ridgamma, season)[0])
+            ridsse = sse(nums, holt_winters(nums, season, ridalpha, ridbeta, ridgamma, season)[0])
             if (ridalpha < 0 or ridalpha > 1) or (ridbeta < 0 or ridbeta > 1) or (ridgamma < 0 or ridgamma > 1):
                 ridsse += 1000
                 ridsse *= 1000
