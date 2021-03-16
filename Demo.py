@@ -142,7 +142,7 @@ count = len(nums)
 if alpha != -1 and beta != -1 and gamma != -1:  # All parameters specified, Holt-Winters forecasting
     season = args.season
     if season == -1: season = len(nums) // 2  # TODO ugly
-    res, dev, ubound, lbound = APIForecast.triple_exponential_smoothing(nums, season, alpha, beta, gamma, season)  # API
+    res, dev, ubound, lbound = APIForecast.holt_winters(nums, season, alpha, beta, gamma, season)  # API
     RSI = APIForecast.rsi(nums, args.rsi)
 
     for f in res[len(nums):]:
@@ -225,7 +225,7 @@ else:  # No parameters specified, auto fitting with Nelder-Mead
     SSE = bests[0][1]
     MSE = SSE / count
 
-    res, dev, ubound, lbound = APIForecast.triple_exponential_smoothing(nums, season, alpha, beta, gamma, season)
+    res, dev, ubound, lbound = APIForecast.holt_winters(nums, season, alpha, beta, gamma, season)
     RSI = APIForecast.rsi(nums, args.rsi)
 
     for f in res[len(nums):]:
