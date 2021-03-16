@@ -35,7 +35,7 @@ def parse_args():
     parser.set_defaults(iter=True)
     parser.add_argument('--season', type=int, required=False, default=-1,
                         help='points in a season for Holt-Winters forecasting')
-    parser.add_argument('--rsi', type=int, required=False, default=2,
+    parser.add_argument('--rsi', type=int, required=False, default=12,
                         help='points for RSI calculation')
     parser.add_argument('--interval', type=int, required=False, default=30,
                         help='number of seconds for aggregation')
