@@ -60,7 +60,7 @@ def sse(values, predictions):
         return sys.float_info.max
 
 
-def triple_exponential_smoothing(series, slen, alpha, beta, gamma, n_preds):
+def holt_winters(series, slen, alpha, beta, gamma, n_preds):
     result = []
     deviation = []
     ubound, lbound = [], []
