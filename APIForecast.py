@@ -83,7 +83,7 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
             val = series[i]
             last_smooth, smooth = smooth, alpha * (val - seasonals[i % slen]) + (1 - alpha) * (smooth + trend)
             trend = beta * (smooth - last_smooth) + (1 - beta) * trend
-            seasonals[i % slen] = gamma * (val - smooth - trend) + (1 - gamma) * seasonals[i % slen]
+            seasonals[i % slen] = gamma * (val - smooth) + (1 - gamma) * seasonals[i % slen]
             prediction = smooth + trend + seasonals[i % slen]
             result.append(prediction)
 #           deviations[i % slen] = abs(gamma * abs(val - prediction) + (1 - gamma) * deviations[i % slen])
