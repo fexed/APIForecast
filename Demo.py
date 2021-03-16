@@ -8,7 +8,7 @@ import argparse
 import sys
 from datetime import datetime, timedelta, time
 import APIForecast
-import Dataset
+#import CreateDatasets
 import Utils
 
 # Params
@@ -66,7 +66,7 @@ errors = 0  # Errors (output)
 if dataset == "NULL" and pcap == "NULL":
     Utils.printgreen("Generating dataset...\n")
     for i in range(14):
-        generated = Dataset.createDataset()
+        #generated = CreateDatasets.createDataset()
         for n in generated:
             nums.append(n)
     n = 0  # Temp (output)

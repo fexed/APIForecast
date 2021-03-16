@@ -6,8 +6,8 @@ from random import *
 def parse_args():
     parser = argparse.ArgumentParser(description="TODO")
     data_parser = parser.add_mutually_exclusive_group(required=False)
-    data_parser.add_argument("--mode", type=str, required=False, default="NULL",
-                            help="<normal> for a normal dataset or <anomal> whit a anomalous day")
+    data_parser.add_argument("--type", type=str, required=False, default="NULL",
+                            help="<normal> for a normal dataset or <anomalous> whit a anomalous day")
     data_parser.add_argument("--days", type=int, required=False, default=5,
                             help = "number of days")
     return parser.parse_args()
@@ -73,7 +73,7 @@ def dataFromJson(filename):
 
 #MAIN
 args = parse_args()
-datasetType = args.mode
+datasetType = args.type
 numdays = args.days
 master_dataset = []
 if (datasetType == "normal"):
@@ -81,12 +81,11 @@ if (datasetType == "normal"):
         master_dataset += createDataset()
     print("Dataset created")
     dataToJson(master_dataset, "dataset.json")
-elif(datasetType == "anomal"):
+elif(datasetType == "anomalous"):
     for i in range(numdays-1):
         master_dataset += createDataset()
     master_dataset += createAnomalousDataset()
-    print("Anomal Dataset created")
-    dataToJson(master_dataset, "anomalDataset.json")
+    print("Anomalous Dataset created")
+    dataToJson(master_dataset, "anomalousDataset.json")
 else:
     print("Dataset not created")
-    

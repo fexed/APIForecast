@@ -90,6 +90,19 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
             deviation.append(abs(gamma * abs(val - prediction) + (1 - gamma) * deviations[i % slen]))
         ubound.append(result[-1] + 2.5 * deviation[-1])
         lbound.append(result[-1] - 2.5 * deviation[-1])
+    ub, lb = [], []
+    n_seasons = int(len(series) / slen)
+    for i in range(slen):
+        sub, slb = 0, 0
+        for j in range(n_seasons):
+            sub += ubound[i + j*slen]
+            slb += lbound[i + j*slen]
+        ub.append(sub/n_seasons)
+        lb.append(slb/n_seasons)
+    ubound, lbound = [], []
+    for i in range(n_seasons):
+        ubound.extend(ub)
+        lbound.extend(lb)
     return result, deviation, ubound, lbound
 
 
@@ -210,6 +223,7 @@ def fit_neldermead(nums, season):
 
 
 def fit_tnc(nums, season):
+    return 0, 0, 0, 0
     # TODO
 
 
