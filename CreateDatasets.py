@@ -37,6 +37,7 @@ def createDataset():
         dataset.append(randint(0,10))
     return dataset
 
+
 # Create a anomalous dataser for a day
 def createAnomalousDataset():
     dataset = []
@@ -61,15 +62,18 @@ def createAnomalousDataset():
         dataset.append(randint(0,10))
     return dataset
 
+
 def dataToJson(dataset, filename):
     outfile = open(filename, "w")
     json.dump(dataset, outfile, indent=4)
     outfile.close()
 
+
 def dataFromJson(filename):
     infile = open(filename, "r")
     dataset = json.load(infile)
     return dataset
+
 
 #MAIN
 args = parse_args()
