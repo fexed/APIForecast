@@ -1,5 +1,6 @@
 import random
 import sys
+import scipy.optimize as optimize
 
 
 def exponential_smoothing(series, alpha):
@@ -233,8 +234,12 @@ def fit_neldermead(nums, season):
 
 
 def fit_tnc(nums, season):
-    return 0, 0, 0, 0
-    # TODO
+    bounds = ((0, 1), (0, 1), (0, 1))
+    x = [round(random.uniform(0, 1), 3), round(random.uniform(0, 1), 3), round(random.uniform(0, 1), 3)]
+    fun = lambda x: sse(nums, holt_winters(nums, season, x[0], x[1], x[2], season)[0])
+    opt = optimize.minimize(fun, x0=x, method='TNC', bounds=bounds)
+    SSE = sse(nums, holt_winters(nums, season, opt.x[0], opt.x[1], opt.x[2], season)[0])
+    return opt.x[0], opt.x[1], opt.x[2], SSE
 
 
 def rsi(nums, N):
