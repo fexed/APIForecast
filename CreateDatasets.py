@@ -4,7 +4,7 @@ from random import *
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="TODO")
+    parser = argparse.ArgumentParser(description="Create a dataset or an anomalous dataset for testing")
     data_parser = parser.add_mutually_exclusive_group(required=False)
     data_parser.add_argument("--type", type=str, required=False, default="NULL",
                             help="<normal> for a normal dataset or <anomalous> whit a anomalous day")
