@@ -212,7 +212,8 @@ else:  # No parameters specified, auto fitting with Nelder-Mead
 
     bests = []
     for i in range(iterations):
-        alpha, beta, gamma, SSE = APIForecast.fit_neldermead(nums, season)
+#       alpha, beta, gamma, SSE = APIForecast.fit_neldermead(nums, season)
+        alpha, beta, gamma, SSE = APIForecast.fit_tnc(nums, season)
         bests.append([[alpha, beta, gamma], SSE])
         Utils.printyellow("\r\033[F\033[K\r\033[F\033[K\r\033[F\033[KIterations\t" + str(len(bests)))
         Utils.printyellow("Last\talpha\tbeta\tgamma\tSSE")
