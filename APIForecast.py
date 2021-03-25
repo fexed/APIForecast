@@ -73,13 +73,12 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
             trend = initial_trend(series, slen)
             result.append(series[0])
             deviation.append(0)
-            ubound.append(result[0] + 2.5 * deviation[0])
-            lbound.append(result[0] - 2.5 * deviation[0])
+            ubound.append(result[0] + 3 * deviation[0])
+            lbound.append(result[0] - 3 * deviation[0])
             continue
         if i >= len(series):  # we are forecasting
             m = i - len(series) + 1
             result.append((smooth + m * trend) + seasonals[i % slen])
-            deviation.append(0)  # Unknown
         else:
             val = series[i]
             last_smooth, smooth = smooth, alpha * (val - seasonals[i % slen]) + (1 - alpha) * (smooth + trend)
@@ -87,34 +86,11 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
             seasonals[i % slen] = gamma * (val - smooth) + (1 - gamma) * seasonals[i % slen]
             prediction = smooth + trend + seasonals[i % slen]
             result.append(prediction)
-#           deviations[i % slen] = abs(gamma * abs(val - prediction) + (1 - gamma) * deviations[i % slen])
-            deviation.append(abs(gamma * abs(val - prediction) + (1 - gamma) * deviations[i % slen]))
-        ubound.append(result[-1] + 2.5 * deviation[-1])
-        lbound.append(result[-1] - 2.5 * deviation[-1])
-    ub, lb = [], []
-    n_seasons = int(len(series) / slen)
+            deviation.append(abs(gamma * abs(val - prediction) + (1 - gamma) * deviations[i%slen]))
+            ubound.append(result[i] + 3 * deviation[i])
+            lbound.append(result[i] - 3 * deviation[i])
+    return result, deviation, ubound, lbound
 
-    for i in range(len(series)):
-        currseason = int(i / slen) + 1
-        sub, slb = 0, 0
-        for j in range(currseason):
-#           print(str(i) + " " + str(j) + " " + str(i + j*slen))
-            sub += ubound[i - j*slen]
-            slb += lbound[i - j*slen]
-        ub.append(sub/currseason)
-        lb.append(slb/currseason)
-#    for i in range(slen):
-#       sub, slb = 0, 0
-#        for j in range(n_seasons):
-#            sub += ubound[i + j*slen]
-#            slb += lbound[i + j*slen]
-#        ub.append(sub/n_seasons)
-#        lb.append(slb/n_seasons)
-#    ubound, lbound = [], []
-#    for i in range(n_seasons):
-#        ubound.extend(ub)
-#        lbound.extend(lb)
-    return result, deviation, ub, lb
 
 
 def fit_neldermead(nums, season):
