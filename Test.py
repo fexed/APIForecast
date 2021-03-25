@@ -82,3 +82,5 @@ ubound += forecastubound
 lbound += forecastlbound
 
 u.plot(series, intervals, res, ubound, lbound, None, f"alpha ={alpha}, beta = {beta}, gamma = {gamma}")
+
+#prova
