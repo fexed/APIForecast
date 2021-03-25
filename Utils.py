@@ -60,3 +60,6 @@ def plot(values, dates, predictions=None, upperbound=None, lowerbound=None, rsi=
         plt.title(title)
     plt.get_current_fig_manager().window.maximize()
     plt.show()
+
+
+#prova
