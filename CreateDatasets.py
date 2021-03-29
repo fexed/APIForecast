@@ -79,17 +79,19 @@ def dataFromJson(filename):
 args = parse_args()
 datasetType = args.type
 numdays = args.days
-master_dataset = []
-if (datasetType == "normal"):
+dataset = []
+if (datasetType == "series"):
     for i in range(numdays):
-        master_dataset += createDataset()
-#    print("Dataset created")
-    dataToJson(master_dataset, "dataset.json")
+        dataset += createDataset()
+    print("Dataset created")
+    dataToJson(dataset, "dataset.json")
 elif(datasetType == "anomalous"):
-    for i in range(numdays-1):
-        master_dataset += createDataset()
-    master_dataset += createAnomalousDataset()
-#    print("Anomalous Dataset created")
-    dataToJson(master_dataset, "anomalousDataset.json")
-#else:
-#    print("Dataset not created")
+    dataset = createAnomalousDataset()
+    print("Anomalous day Dataset created")
+    dataToJson(dataset, "anomalousDay.json")
+elif(datasetType == "normal"):
+    dataset = createDataset()
+    print("Normal day Dataset created")
+    dataToJson(dataset, "normalDay.json")
+else:
+    print("Dataset not created")

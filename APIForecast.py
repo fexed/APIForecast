@@ -92,11 +92,11 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
     return result, deviation, ubound, lbound
 
 
-def forecast_bounds(prediction, anomaly, dev, slen, gamma):
+def forecast_bounds(prediction, realSeries, dev, slen, gamma):
     ub, lb, deviations = [], [], []
-    for i in range(len(anomaly)):
+    for i in range(len(realSeries)):
         index = i + slen
-        deviations.append(gamma * abs(anomaly[i] - prediction[index]) + (1 - gamma) * dev[i-slen+1])
+        deviations.append(gamma * abs(realSeries[i] - prediction[index]) + (1 - gamma) * dev[i-slen+1])
         ub.append(prediction[index] + 3 * dev[i])
         lb.append(prediction[index] - 3 * dev[i])
     return ub, lb

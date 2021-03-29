@@ -22,6 +22,19 @@ def printgreen(txt):
     print(cgreen + txt + cend)
 
 
+def plotSDE(values, dates, predictions, title=None):
+    plt.gca().xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
+    plt.plot(dates[0:len(values)], values, label="Values")
+    plt.plot(dates, predictions, '--', label="Predictions")
+    plt.xticks(rotation=45)
+    plt.xlabel("Time")
+    plt.ylabel("Bytes")
+    plt.legend(loc="upper left")
+    if not (title is None):
+        plt.title(title)
+    plt.get_current_fig_manager().window.maximize()
+    plt.show()
+
 # Plotting
 def plot(values, dates, predictions=None, upperbound=None, lowerbound=None, rsi=None, title=None):
     plt.gca().xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
