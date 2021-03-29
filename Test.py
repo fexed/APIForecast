@@ -37,24 +37,27 @@ interval = 300 # 5 minuti
 now = datetime.combine(datetime.today(), time.min)
 for i in series:
     intervals.append(now)
-    now = now + timedelta(0, interval) 
+    now = now + timedelta(0, interval)
 lastdate = now
 
 # Test Holt-Winters
+printYellow("\nHolt-Winters")
 n_preds = 288
 slen = 288
 
-alpha = 0.26
-beta = 0.19
-gamma = 0.00195
+#alpha = 0.26
+#beta = 0.19
+#gamma = 0.00195
 
-alpha = 0.57300
-beta = 0.00667
-gamma = 0.92767
+#alpha = 0.57300
+#beta = 0.00667
+#gamma = 0.92767
 
 alpha = 0.7
 beta = 0.0000000000000000000000000000000000001
 gamma = 0.8
+
+printYellow("\talpha =\t" + str(alpha) + "\n\tbeta = \t" + str(beta) + "\n\tgamma =\t" + str(gamma))
 
 for i in range (n_preds):
     lastdate = lastdate + timedelta(0, interval)
@@ -62,10 +65,9 @@ for i in range (n_preds):
 #alpha, beta, gamma, SSE = api.fit_neldermead(series, n_preds)
 res, dev, ubound, lbound = api.holt_winters(series, slen, alpha, beta, gamma, n_preds)
 
-
 #Experimental
-
-anomalousDay = CreateDatasets.createDataset()
+printYellow("\nForecasting su nuovo dataset generato")
+#anomalousDay = CreateDatasets.createDataset()
 anomalousDay = CreateDatasets.createAnomalousDataset()
 forecastDeviation = []
 forecastubound = []
@@ -83,4 +85,3 @@ lbound += forecastlbound
 
 u.plot(series, intervals, res, ubound, lbound, None, f"alpha ={alpha}, beta = {beta}, gamma = {gamma}")
 
-#prova
