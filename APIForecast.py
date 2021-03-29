@@ -92,7 +92,7 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
     return result, deviation, ubound, lbound
 
 
-def bounds(prediction, anomaly, dev, slen, gamma):
+def forecast_bounds(prediction, anomaly, dev, slen, gamma):
     ub, lb, deviations = [], [], []
     for i in range(len(anomaly)):
         index = i + slen
