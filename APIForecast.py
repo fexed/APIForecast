@@ -92,6 +92,15 @@ def holt_winters(series, slen, alpha, beta, gamma, n_preds):
     return result, deviation, ubound, lbound
 
 
+def bounds(prediction, anomaly, dev, slen, gamma):
+    ub, lb, deviations = [], [], []
+    for i in range(len(anomaly)):
+        index = i + slen
+        deviations.append(gamma * abs(anomaly[i] - prediction[index]) + (1 - gamma) * dev[i-slen+1])
+        ub.append(prediction[index] + 3 * dev[i])
+        lb.append(prediction[index] - 3 * dev[i])
+    return ub, lb
+
 
 def fit_neldermead(nums, season):
     # Fitting alpha, beta, gamma parameters for Holt-Winter forecasting with Nelder-Mead algorithm
