@@ -83,13 +83,13 @@ master_dataset = []
 if (datasetType == "normal"):
     for i in range(numdays):
         master_dataset += createDataset()
-    print("Dataset created")
+#    print("Dataset created")
     dataToJson(master_dataset, "dataset.json")
 elif(datasetType == "anomalous"):
     for i in range(numdays-1):
         master_dataset += createDataset()
     master_dataset += createAnomalousDataset()
-    print("Anomalous Dataset created")
+#    print("Anomalous Dataset created")
     dataToJson(master_dataset, "anomalousDataset.json")
-else:
-    print("Dataset not created")
+#else:
+#    print("Dataset not created")
