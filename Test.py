@@ -70,14 +70,7 @@ printYellow("\nForecasting su nuovo dataset generato")
 #anomalousDay = CreateDatasets.createDataset()
 anomalousDay = CreateDatasets.createAnomalousDataset()
 forecastDeviation = []
-forecastubound = []
-forecastlbound = []
-
-for i in range (len(anomalousDay)):
-    index = i + len(series)
-    dev.append(gamma * abs(anomalousDay[i] - res[index]) + (1 - gamma) * dev[i-len(series)+1])
-    forecastubound.append(res[index] + 3 * dev[i])
-    forecastlbound.append(res[index] - 3 * dev[i])
+forecastubound, forecastlbound = api.bounds(res, anomalousDay, dev, len(series), gamma)
 
 series += anomalousDay
 ubound += forecastubound
