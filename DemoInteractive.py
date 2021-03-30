@@ -13,12 +13,12 @@ series = []  # Data
 dates = []  # Timestamps
 interval = 300 # 5 minuts
 
-Utils.printyellow("Do you wont read a pcap or json file?")
+Utils.printyellow("Do you want to read a pcap or json file?")
 Utils.printyellow(" 1 -- pcap")
 Utils.printyellow(" 2 -- json")
-choise = int(input())
-if (choise == 1):
-    Utils.printyellow("Insert the path:")
+choice = int(input())
+if (choice == 1):
+    Utils.printyellow("Path:")
     path = input()
     cap = pyshark.FileCapture(path)
     for pkt in cap:
@@ -26,8 +26,8 @@ if (choise == 1):
         series.append(int(pkt.length) / 1000)
     #TODO
 
-elif(choise == 2):
-    Utils.printyellow("Insert the path:")
+elif(choice == 2):
+    Utils.printyellow("Path:")
     path = input()
     series = json.load(open(path, "r"))
     now = datetime.combine(datetime.today(), time.min)
@@ -39,12 +39,12 @@ lastdate = dates[len(dates) - 1]
 
 stop = False
 while(stop == False):
-    command = Utils.inputyellow("Insert the command: ")
+    command = Utils.inputyellow("Input the command: ")
     if(command == help):
         pippo = 2
         #TODO
     elif(command == "plotSE"):
-        alpha = float(Utils.inputyellow("Insert alpha: "))
+        alpha = float(Utils.inputyellow("Input alpha: "))
         res = APIForecast.exponential_smoothing(series, alpha)
         datesSE = []
         datesSE += dates
@@ -52,8 +52,8 @@ while(stop == False):
         Utils.plotSDE(values=series, dates=datesSE, predictions=res, title=f"Exponential Smoothing, alpha={alpha}")
 
     elif(command == "plotDE"):
-        alpha = float(Utils.inputyellow("Insert alpha: "))
-        beta = float(Utils.inputyellow("Insert beta: "))
+        alpha = float(Utils.inputyellow("Input alpha: "))
+        beta = float(Utils.inputyellow("Input beta: "))
         res = APIForecast.double_exponential_smoothing(series, alpha, beta)
         datesDE = []
         datesDE += dates
@@ -63,26 +63,25 @@ while(stop == False):
         Utils.plotSDE(series, datesDE, res, f" Double Exponential Smoothing, alpha={alpha}, beta={beta}")
 
     elif(command == "plotHW"):
-        alpha = float(Utils.inputyellow("Insert alpha: "))
-        beta = float(Utils.inputyellow("Insert beta: "))
-        gamma = float(Utils.inputyellow("Insert gamma: "))
-        slen = int(Utils.inputyellow("Insert slen: "))
-        n_preds = int(Utils.inputyellow("Insert n_preds: "))
+        alpha = float(Utils.inputyellow("Input alpha: "))
+        beta = float(Utils.inputyellow("Input beta: "))
+        gamma = float(Utils.inputyellow("Input gamma: "))
+        slen = int(Utils.inputyellow("Input slen: "))
+        n_preds = int(Utils.inputyellow("Input n_preds: "))
         datesHW = dates
         for i in range (n_preds):
             lastdate = lastdate + timedelta(minutes=5)
             datesHW.append(lastdate)
         res, dev, ubound, lbound = APIForecast.holt_winters(series, slen, alpha, beta, gamma, n_preds)
         Utils.plot(series, datesHW, res, ubound, lbound, None, f"alpha ={alpha}, beta = {beta}, gamma = {gamma}")
-    
     elif(command == "plotHW+"):
-        path = Utils.inputyellow("Insert path: ")
+        path = Utils.inputyellow("Input path: ")
         realSeries = json.load(open(path, "r"))
-        alpha = float(Utils.inputyellow("Insert alpha: "))
-        beta = float(Utils.inputyellow("Insert beta: "))
-        gamma = float(Utils.inputyellow("Insert gamma: "))
-        slen = int(Utils.inputyellow("Insert slen: "))
-        n_preds = int(Utils.inputyellow("Insert n_preds: "))
+        alpha = float(Utils.inputyellow("Input alpha: "))
+        beta = float(Utils.inputyellow("Input beta: "))
+        gamma = float(Utils.inputyellow("Input gamma: "))
+        slen = int(Utils.inputyellow("Input slen: "))
+        n_preds = int(Utils.inputyellow("Input n_preds: "))
         datesHW = dates
         for i in range (n_preds):
             lastdate = lastdate + timedelta(minutes=5)
@@ -91,11 +90,11 @@ while(stop == False):
         forecastubound, forecastlbound = APIForecast.forecast_bounds(res, realSeries, dev, len(series), gamma)
         series += realSeries
         ubound += forecastubound
-        lbound += forecastlbound    
+        lbound += forecastlbound
         Utils.plot(series, datesHW, res, ubound, lbound, None, f"alpha ={alpha}, beta = {beta}, gamma = {gamma}")
 
     elif(command == "plotRSI"):
-        N = int(Utils.inputyellow("Insert N: "))
+        N = int(Utils.inputyellow("Input N: "))
         rsi = APIForecast.rsi(series, N)
         Utils.plot(series, dates, None, None, None, rsi, None)
 
