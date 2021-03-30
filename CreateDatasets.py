@@ -1,5 +1,6 @@
 import argparse
 import json
+#import pyshark
 from random import *
 
 
@@ -10,6 +11,8 @@ def parse_args():
                             help="<normal> for a normal dataset or <anomalous> whit a anomalous day")
     data_parser.add_argument("--days", type=int, required=False, default=5,
                             help = "number of days")
+    data_parser.add_argument("--pcap", type=str, required=False, default="NULL",
+                            help = "condenses the input pcap into a dataset with 5m intervals")
     return parser.parse_args()
 
 
@@ -78,6 +81,7 @@ def dataFromJson(filename):
 #MAIN
 args = parse_args()
 datasetType = args.type
+pcap = args.pcap
 numdays = args.days
 dataset = []
 if (datasetType == "series"):
@@ -93,5 +97,39 @@ elif(datasetType == "normal"):
     dataset = createDataset()
     print("Normal day Dataset created")
     dataToJson(dataset, "normalDay.json")
+elif(pcap != "NULL"):
+    import pyshark
+    from datetime import datetime
+    dates, series, interval = [], [], 300
+    cap = pyshark.FileCapture(pcap)
+    for pkt in cap:
+        try:
+            dates.append(float(pkt.frame_info.time_epoch))
+            series.append(int(pkt.length) / 1000)
+            print("\r\033[F\033[KReading " + str(series[-1]))
+        except AttributeError:
+            continue
+    intervals = []
+    newseries = []
+    start = -1
+    sum, j = 0, 0
+    for i in range(len(dates)):
+        if start == -1:
+            start = i
+            sum += series[i]
+        else:
+            elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
+            sum += series[i]
+            if elapsed.total_seconds() > interval:
+                j += 1
+                newseries.append(sum)
+                intervals.append(datetime.fromtimestamp(dates[i]))
+                lastdate = datetime.fromtimestamp(dates[i])
+                sum = 0
+                start = -1
+                print("\r\033[F\033[KCondensating " + str(newseries[-1]))
+    series = newseries
+    dates = intervals
+    dataToJson(series, pcap + ".json")
 else:
     print("Dataset not created")
