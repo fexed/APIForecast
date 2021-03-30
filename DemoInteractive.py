@@ -24,7 +24,26 @@ if (choice == 1):
     for pkt in cap:
         dates.append(float(pkt.frame_info.time_epoch))
         series.append(int(pkt.length) / 1000)
-    #TODO
+    intervals = []
+    newseries = []
+    start = -1
+    sum, j = 0, 0
+    for i in range(len(dates)):
+        if start == -1:
+            start = i
+            sum += series[i]
+        else:
+            elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
+            sum += series[i]
+            if elapsed.total_seconds() > interval:
+                j += 1
+                newseries.append(sum)
+                intervals.append(datetime.fromtimestamp(dates[i]))
+                lastdate = datetime.fromtimestamp(dates[i])
+                sum = 0
+                start = -1
+    series = newseries
+    dates = intervals
 
 elif(choice == 2):
     Utils.printyellow("Path:")
@@ -35,11 +54,11 @@ elif(choice == 2):
         dates.append(now)
         now = now + timedelta(0, interval)
 
-lastdate = dates[len(dates) - 1]
+lastdate = dates[-1]
 
 stop = False
 while(stop == False):
-    command = Utils.inputyellow("Input the command: ")
+    command = Utils.inputyellow("[plotSE, plotDE, plotHW, plotHW+, plotRSI, exit]\nCommand: ")
     if(command == help):
         pippo = 2
         #TODO
