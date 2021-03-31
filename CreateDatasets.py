@@ -106,7 +106,7 @@ elif(pcap != "NULL"):
         try:
             dates.append(float(pkt.frame_info.time_epoch))
             series.append(int(pkt.length) / 1000)
-            print("\r\033[F\033[KReading " + str(series[-1]))
+            print("\r\033[F\033[KReading " + str(series[-1]) + " " + datetime.fromtimestamp(dates[-1]).strftime("%Y-%m-%d %H:%M"))
         except AttributeError:
             continue
     print("\n\tFrom " + datetime.fromtimestamp(dates[0]).strftime("%Y-%m-%d %H:%M") + " to " + datetime.fromtimestamp(dates[-1]).strftime("%Y-%m-%d %H:%M")+"\n\n")
@@ -128,7 +128,7 @@ elif(pcap != "NULL"):
                 lastdate = datetime.fromtimestamp(dates[i])
                 sum = 0
                 start = -1
-                print("\r\033[F\033[KCondensating " + str(i - start) + " points: " + str(newseries[-1]))
+                print("\nCondensating " + str(i - start) + " points: " + str(newseries[-1]) + "\n")
     series = newseries
     dates = intervals
     dataToJson(series, pcap + ".json")
