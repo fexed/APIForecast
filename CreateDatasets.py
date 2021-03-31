@@ -121,14 +121,14 @@ elif(pcap != "NULL"):
         else:
             elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
             sum += series[i]
-            print("\r\033[F\033[K" + str(elapsed.total_seconds()) + " s")
+#           print("\r\033[F\033[K" + str(elapsed.total_seconds()) + " s")
             if elapsed.total_seconds() > 300:
                 newseries.append(sum)
                 intervals.append(datetime.fromtimestamp(dates[i]))
                 lastdate = datetime.fromtimestamp(dates[i])
                 sum = 0
                 start = -1
-                print("\nCondensating " + str(i - start) + " points: " + str(newseries[-1]) + "\n")
+                print("\r\033[F\033[KCondensating " + str(i - start) + " points: " + str(newseries[-1]) + "\n")
     series = newseries
     dates = intervals
     dataToJson(series, pcap + ".json")

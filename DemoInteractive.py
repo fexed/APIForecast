@@ -69,7 +69,6 @@ while(stop == False):
         datesSE += dates
         datesSE.append(lastdate + timedelta(minutes=5))
         Utils.plotSDE(values=series, dates=datesSE, predictions=res, title=f"Exponential Smoothing, alpha={alpha}")
-
     elif(command == "plotDE"):
         alpha = float(Utils.inputyellow("Input alpha: "))
         beta = float(Utils.inputyellow("Input beta: "))
@@ -80,7 +79,6 @@ while(stop == False):
             lastdate = lastdate + timedelta(minutes=5)
             datesDE.append(lastdate)
         Utils.plotSDE(series, datesDE, res, f" Double Exponential Smoothing, alpha={alpha}, beta={beta}")
-
     elif(command == "plotHW"):
         alpha = float(Utils.inputyellow("Input alpha: "))
         beta = float(Utils.inputyellow("Input beta: "))
@@ -88,6 +86,7 @@ while(stop == False):
         slen = int(Utils.inputyellow("Input slen: "))
         n_preds = int(Utils.inputyellow("Input n_preds: "))
         datesHW = dates
+        #TODO clear lastdate
         for i in range (n_preds):
             lastdate = lastdate + timedelta(minutes=5)
             datesHW.append(lastdate)
@@ -102,6 +101,7 @@ while(stop == False):
         slen = int(Utils.inputyellow("Input slen: "))
         n_preds = int(Utils.inputyellow("Input n_preds: "))
         datesHW = dates
+        #TODO clear lastdate
         for i in range (n_preds):
             lastdate = lastdate + timedelta(minutes=5)
             datesHW.append(lastdate)
@@ -111,12 +111,10 @@ while(stop == False):
         ubound += forecastubound
         lbound += forecastlbound
         Utils.plot(series, datesHW, res, ubound, lbound, None, f"alpha ={alpha}, beta = {beta}, gamma = {gamma}")
-
     elif(command == "plotRSI"):
         N = int(Utils.inputyellow("Input N: "))
         rsi = APIForecast.rsi(series, N)
         Utils.plot(series, dates, None, None, None, rsi, None)
-
     elif(command == "exit"):
         stop = True
     else:
