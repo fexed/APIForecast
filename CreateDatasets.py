@@ -121,7 +121,7 @@ elif(pcap != "NULL"):
         else:
             elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
             sum += series[i]
-            print("\r\033[F\033" + str(elapsed.total_seconds()) + " s")
+            print("\r\033[F\033[K" + str(elapsed.total_seconds()) + " s")
             if elapsed.total_seconds() > 300:
                 newseries.append(sum)
                 intervals.append(datetime.fromtimestamp(dates[i]))
