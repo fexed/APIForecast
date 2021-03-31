@@ -109,10 +109,11 @@ elif(pcap != "NULL"):
             print("\r\033[F\033[KReading " + str(series[-1]))
         except AttributeError:
             continue
+    print("\n\tFrom " + datetime.fromtimestamp(dates[0]).strftime("%Y-%m-%d %H:%M") + " to " + datetime.fromtimestamp(dates[-1]).strftime("%Y-%m-%d %H:%M")+"\n\n")
     intervals = []
     newseries = []
     start = -1
-    sum, j = 0, 0
+    sum = 0
     for i in range(len(dates)):
         if start == -1:
             start = i
@@ -120,14 +121,14 @@ elif(pcap != "NULL"):
         else:
             elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
             sum += series[i]
-            if elapsed.total_seconds() > interval:
-                j += 1
+            print("\r\033[F\033" + str(elapsed.total_seconds()) + " s")
+            if elapsed.total_seconds() > 300:
                 newseries.append(sum)
                 intervals.append(datetime.fromtimestamp(dates[i]))
                 lastdate = datetime.fromtimestamp(dates[i])
                 sum = 0
                 start = -1
-                print("\r\033[F\033[KCondensating " + str(newseries[-1]))
+                print("\r\033[F\033[KCondensating " + str(i - start) + " points: " + str(newseries[-1]))
     series = newseries
     dates = intervals
     dataToJson(series, pcap + ".json")
