@@ -35,7 +35,6 @@ if (choice == 1):
         else:
             elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
             sum += series[i]
-            print("\r\033[F\033[K" + str(elapsed.total_seconds()) + " s")
             if elapsed.total_seconds() > interval:
                 j += 1
                 newseries.append(sum)
