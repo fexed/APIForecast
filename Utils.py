@@ -21,6 +21,18 @@ def printgreen(txt):
     cgreen = '\33[32m'
     print(cgreen + txt + cend)
 
+def plotRSI(rsi, dates, title=None):
+    plt.gca().xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
+    plt.plot(dates[0:len(rsi)], rsi[0:len(rsi)], label="RSI")
+    plt.xticks(rotation=45)
+    plt.xlabel("Time")
+    plt.ylabel("")
+    plt.legend(loc="upper left")
+    if not (title is None):
+        plt.title(title)
+    plt.get_current_fig_manager().window.maximize()
+    plt.show()
+
 
 def plotSDE(values, dates, predictions, title=None):
     plt.gca().xaxis.set_major_formatter(md.DateFormatter('%H:%M'))

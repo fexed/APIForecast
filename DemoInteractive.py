@@ -58,7 +58,7 @@ elif(choice == 2):
 
 stop = False
 while(stop == False):
-    command = Utils.inputyellow("[plotSE, plotDE, plotHW, plotHW+, plotRSI, exit]\nCommand: ")
+    command = Utils.inputyellow("[plotSE, plotDE, plotHW, plotHW+, plotRSI, plotRSI-, exit]\nCommand: ")
     if(command == help):
         pippo = 2
         #TODO
@@ -115,6 +115,10 @@ while(stop == False):
         N = int(Utils.inputyellow("Input N: "))
         rsi = APIForecast.rsi(series, N)
         Utils.plot(series, dates, None, None, None, rsi, None)
+    elif(command == "plotRSI-"):
+        N = int(Utils.inputyellow("Input N: "))
+        rsi = APIForecast.rsi(series, N)
+        Utils.plotRSI(rsi, dates, None)
     elif(command == "exit"):
         stop = True
     else:
