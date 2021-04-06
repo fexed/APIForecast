@@ -8,7 +8,7 @@ def exponential_smoothing(series, alpha):
     for i in range(1, len(series)):
         result.append(alpha * series[i] + (1 - alpha) * result[i - 1])
     # Now append the prediction
-    result.append(alpha * series[i] + (1 - alpha) * result[i])
+    result.append(alpha * series[-1] + (1 - alpha) * result[-1])
     return result
 
 
