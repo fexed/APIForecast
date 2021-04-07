@@ -63,18 +63,8 @@ dates = []  # Timestamps
 count = 0  # Counting (output)
 errors = 0  # Errors (output)
 if dataset == "NULL" and pcap == "NULL":
-    Utils.printgreen("Generating dataset...\n")
-    for i in range(14):
-        #generated = CreateDatasets.createDataset()
-        for n in generated:
-            nums.append(n)
-    n = 0  # Temp (output)
-    now = datetime.combine(datetime.today(), time.min)
-    for n in nums:
-        count = count + 1
-        dates.append(now)
-        now = now + timedelta(minutes=5)  # Every 5 mins TODO: parameter to specify
-        Utils.printyellow("\r\033[F\033[KGenerating\t" + "#" + str(count) + " " + str(n) + "B")
+    Utils.printyellow("\r\033[F\033[KPlease specify an input file")
+    sys.exit(0)
 else:
     if dataset != "NULL":
         Utils.printgreen("Loading dataset...\n")
@@ -198,50 +188,5 @@ elif alpha != -1:  # Only alpha specified, Single Exponential forecasting
     Utils.printgreen("\n\nSingle Exponential until " + dates[len(dates) - 1].strftime("%Y-%m-%d %H:%M:%S"))
 
     Utils.plot(nums, dates, res, None, None, RSI, "Single Exponential forecasting (alpha = " + str(alpha) + ")")
-else:  # No parameters specified, auto fitting with Nelder-Mead
-    season = args.season
-    if season == -1: season = len(nums) // 2  # TODO ugly
-    start_time = datetime.now()
-    itr = args.iter
-    if itr:
-        iterations = 100
-    else:
-        iterations = 1
-    Utils.printgreen("\n\nFitting data...\n\n\n")
-
-    bests = []
-    for i in range(iterations):
-#       alpha, beta, gamma, SSE = APIForecast.fit_neldermead(nums, season)
-        alpha, beta, gamma, SSE = APIForecast.fit_tnc(nums, season)
-        bests.append([[alpha, beta, gamma], SSE])
-        Utils.printyellow("\r\033[F\033[K\r\033[F\033[K\r\033[F\033[KIterations\t" + str(len(bests)))
-        Utils.printyellow("Last\talpha\tbeta\tgamma\tSSE")
-        Utils.printyellow("\t" + "{:.5f}".format(alpha) + "\t" + "{:.5f}".format(beta) + "\t" + "{:.5f}".format(gamma) + "\t" + "{:.5f}".format(SSE))
-
-    bests.sort(key=lambda x: x[1])
-    alpha = bests[0][0][0]
-    beta = bests[0][0][1]
-    gamma = bests[0][0][2]
-    SSE = bests[0][1]
-    MSE = SSE / count
-
-    res, dev, ubound, lbound = APIForecast.holt_winters(nums, season, alpha, beta, gamma, season)
-    RSI = APIForecast.rsi(nums, args.rsi)
-
-    for f in res[len(nums):]:
-        lastdate = lastdate + timedelta(minutes=5)
-        dates.append(lastdate)
-
-    # Formatting for better output
-    strSSE = "{:.5f}".format(SSE)
-    strMSE = "{:.5f}".format(MSE)
-    stralpha = "{:.5f}".format(alpha)
-    strbeta = "{:.5f}".format(beta)
-    strgamma = "{:.5f}".format(gamma)
-    elapsed = (datetime.now() - start_time)
-    Utils.printyellow("\nFitted in " + str(
-        elapsed) + "!\n\talpha = " + stralpha + "\n\tbeta = " + strbeta + "\n\tgamma = " + strgamma)
-    Utils.printgreen("\n\nHolt-Winters until " + dates[len(dates) - 1].strftime("%Y-%m-%d %H:%M:%S"))
-
-    Utils.plot(nums, dates, res, ubound, lbound, RSI, "Holt-Winters forecasting (fitted alpha = " + stralpha +
-               ", beta = " + strbeta + ", gamma = " + strgamma + ")\nSSE = " + strSSE + ", MSE = " + strMSE)
+else:  # No parameters specified, exiting
+    Utils.printgreen("\nNo parameters specified")
