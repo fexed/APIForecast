@@ -40,7 +40,7 @@ def plotSDE(values, dates, predictions, title=None):
     plt.plot(dates, predictions, '--', label="Predictions")
     plt.xticks(rotation=45)
     plt.xlabel("Time")
-    plt.ylabel("Bytes")
+    plt.ylabel("KBytes")
     plt.legend(loc="upper left")
     if not (title is None):
         plt.title(title)
@@ -78,7 +78,7 @@ def plot(values, dates, predictions=None, upperbound=None, lowerbound=None, rsi=
 
     plt.xticks(rotation=45)
     plt.xlabel("Time")
-    plt.ylabel("Bytes")
+    plt.ylabel("KBytes")
     plt.legend(loc="upper left")
 
     if not (title is None):
