@@ -21,6 +21,7 @@ def printgreen(txt):
     cgreen = '\33[32m'
     print(cgreen + txt + cend)
 
+
 def plotRSI(rsi, dates, title=None):
     plt.gca().xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
     plt.plot(dates[0:len(rsi)], rsi[0:len(rsi)], label="RSI")
@@ -47,6 +48,7 @@ def plotSDE(values, dates, predictions, title=None):
     plt.get_current_fig_manager().window.maximize()
     plt.show()
 
+
 # Plotting
 def plot(values, dates, predictions=None, upperbound=None, lowerbound=None, rsi=None, title=None):
     plt.gca().xaxis.set_major_formatter(md.DateFormatter('%H:%M'))
@@ -63,7 +65,6 @@ def plot(values, dates, predictions=None, upperbound=None, lowerbound=None, rsi=
             if (values[i] > upperbound[i]):
                 plt.axvspan(dates[i]-timedelta(minutes=2, seconds=30), dates[i]+timedelta(minutes=2, seconds=30), facecolor='r', alpha=0.25)
                 anomalous.append(values[i])
-
 
     if not (lowerbound is None):
         plt.plot(dates[0:len(values)], lowerbound[0:len(values)], 'r:', label="Lower bound")
