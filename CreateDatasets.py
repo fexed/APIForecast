@@ -1,6 +1,5 @@
 import argparse
 import json
-#import pyshark
 from random import *
 
 
@@ -78,7 +77,6 @@ def dataFromJson(filename):
     return dataset
 
 
-#MAIN
 args = parse_args()
 datasetType = args.type
 pcap = args.pcap
@@ -121,7 +119,6 @@ elif(pcap != "NULL"):
         else:
             elapsed = datetime.fromtimestamp(dates[i]) - datetime.fromtimestamp(dates[start])
             sum += series[i]
-#           print("\r\033[F\033[K" + str(elapsed.total_seconds()) + " s")
             if elapsed.total_seconds() > 300:
                 newseries.append(sum)
                 intervals.append(datetime.fromtimestamp(dates[i]))
