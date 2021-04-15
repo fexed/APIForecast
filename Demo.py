@@ -14,10 +14,8 @@ import Utils
 def parse_args():
     parser = argparse.ArgumentParser(description='Simple script that generates a plot based on an input dataset.json')
     data_parser = parser.add_mutually_exclusive_group(required=False)
-    data_parser.add_argument('--trset', type=str, required=False, default="NULL",
-                             help='dataset from which the script reads the values for training')
-    parser.add_argument('--testset', type=str, required=False, default="NULL",
-                             help='dataset from which the script reads the values for testing')
+    data_parser.add_argument('--dataset', type=str, required=False, default="NULL",
+                             help='dataset from which the script reads the values')
     data_parser.add_argument('--pcap', type=str, required=False, default="NULL",
                              help='pcap from which the script reads the packets')
     parser.add_argument('--alpha', type=float, required=False, default=-1,
@@ -54,7 +52,7 @@ Utils.printgreen("********************************************")
 
 # Arguments
 args = parse_args()
-dataset = args.trset  # Dataset if present
+dataset = args.dataset  # Dataset if present
 pcap = args.pcap  # PCAP if present
 
 start_time = datetime.now()
@@ -150,23 +148,6 @@ if alpha != -1 and beta != -1 and gamma != -1:  # All parameters specified, Holt
     strgamma = "{:.5f}".format(gamma)
     Utils.plot(nums, dates, res, ubound, lbound, RSI, "Holt-Winters forecasting (fitted alpha = " + stralpha +
                ", beta = " + strbeta + ", gamma = " + strgamma + ")\nSSE = " + strSSE + ", MSE = " + strMSE)
-    testset = args.testset
-    if testset != "NULL":
-        Utils.printgreen("\n\nHolt-Winters anomaly detection on " + testset)
-#       ubound, lbound = [], []
-        nums = json.load(open(testset, "r"))
-        datess = []
-        now = datetime.combine(datetime.today(), time.min)
-        count = 0
-        for n in nums:
-            datess.append(now)
-            now = now + timedelta(minutes=5)
-#           ubound.append(res[count % season] + 2.5 * dev[count % season])
-#           lbound.append(res[count % season] - 2.5 * dev[count % season])
-            count += 1
-        RSI = APIForecast.rsi(nums, args.rsi)
-        Utils.plot(nums, datess, None, ubound[0:len(nums)], lbound[0:len(nums)], RSI, "Holt-Winters forecasting (fitted alpha = " + stralpha +
-               ", beta = " + strbeta + ", gamma = " + strgamma + ")")
 elif alpha != -1 and beta != -1:  # Only alpha and beta specified, Double Exponential forecasting
     res = APIForecast.double_exponential_smoothing(nums, alpha, beta)
     RSI = APIForecast.rsi(nums, args.rsi)
