@@ -45,14 +45,6 @@ printYellow("\nHolt-Winters")
 n_preds = 288
 slen = 288
 
-#alpha = 0.26
-#beta = 0.19
-#gamma = 0.00195
-
-#alpha = 0.57300
-#beta = 0.00667
-#gamma = 0.92767
-
 alpha = 0.7
 beta = 0.0000000000000000000000000000000000001
 gamma = 0.8
@@ -62,12 +54,10 @@ printYellow("\talpha =\t" + str(alpha) + "\n\tbeta = \t" + str(beta) + "\n\tgamm
 for i in range (n_preds):
     lastdate = lastdate + timedelta(0, interval)
     intervals.append(lastdate)
-#alpha, beta, gamma, SSE = api.fit_neldermead(series, n_preds)
 res, dev, ubound, lbound = api.holt_winters(series, slen, alpha, beta, gamma, n_preds)
 
 #Experimental
 printYellow("\nForecasting su nuovo dataset generato")
-#anomalousDay = CreateDatasets.createDataset()
 anomalousDay = CreateDatasets.createAnomalousDataset()
 forecastDeviation = []
 forecastubound, forecastlbound = api.forecast_bounds(res, anomalousDay, dev, len(series), gamma)
