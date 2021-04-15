@@ -11,7 +11,7 @@ Utils.printgreen("********************************************")
 start_time = datetime.now()
 series = []  # Data
 dates = []  # Timestamps
-interval = 300 # 5 minuts
+interval = 300  # 5 minutes
 
 Utils.printyellow("Do you want to read a pcap or json file?")
 Utils.printyellow(" 1 -- pcap")
@@ -59,10 +59,7 @@ elif(choice == 2):
 stop = False
 while(stop == False):
     command = Utils.inputyellow("[plotSE, plotDE, plotHW, plotHW+, plotRSI, plotRSI-, exit]\nCommand: ")
-    if(command == help):
-        pippo = 2
-        #TODO
-    elif(command == "plotSE"):
+    if(command == "plotSE"):
         alpha = float(Utils.inputyellow("Input alpha: "))
         res = APIForecast.exponential_smoothing(series, alpha)
         datesSE = []
